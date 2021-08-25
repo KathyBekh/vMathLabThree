@@ -1,6 +1,9 @@
 from math import exp
 import numpy
 from matplotlib import pyplot
+
+import Runge_Kutta3
+import Runge_Kutta4
 import rkf45
 import ExactSolution
 
@@ -29,11 +32,11 @@ def printResult():
     y_rkf45 = rkf45.rkf45(originalFunction, t, initialConditions)
     pyplot.plot(t, y_rkf45, 'r--')
 
-    # y_rk4 = rk4(originalFunction(), t, initialConditions)
-    # pyplot.plot(t, y_rk4, 'k')
-    #
-    # y_rk3 = rk3(originalFunction(), t, initialConditions)
-    # pyplot.plot(t, y_rk3, 'y')
+    y_rk4 = Runge_Kutta4.rk4(originalFunction, t, initialConditions)
+    pyplot.plot(t, y_rk4, 'k')
+
+    y_rk3 = Runge_Kutta3.rk3(originalFunction, t, initialConditions)
+    pyplot.plot(t, y_rk3, 'y')
     #
     # y_adams = adams2(f, t, yO)
     # pyplot.plot(t, y_adams, 'm')
@@ -41,18 +44,18 @@ def printResult():
     # pyplot.show()
 
     errer_local_rkf45 = numpy.abs(y_rkf45 - y_exact)
-    # errer_local_rk4 = numpy.abs(y_rk4 - y_exact)
-    # errer_local_rk3 = numpy.abs(y_rk3 - y_exact)
+    errer_local_rk4 = numpy.abs(y_rk4 - y_exact)
+    errer_local_rk3 = numpy.abs(y_rk3 - y_exact)
     # errer_local_adams = numpy.abs(y_adams - y_exact)
 
     print('First step of RKF45: ', errer_local_rkf45[1])
-    # print('First step of RK4: ', errer_local_rk4[1])
-    # print('First step of RK3: ', errer_local_rk3[1])
+    print('First step of RK4: ', errer_local_rk4[1])
+    print('First step of RK3: ', errer_local_rk3[1])
     # print('First step of ADAMS: ', errer_local_adams[1])
 
     print('Global of RKF45: ', errer_local_rkf45.sum())
-    # print('Global of RK4: ', errer_local_rk4.sum())
-    # print('Global of RK3: ', errer_local_rk3.sum())
+    print('Global of RK4: ', errer_local_rk4.sum())
+    print('Global of RK3: ', errer_local_rk3.sum())
     # print('Global of ADAMS: ', errer_local_adams.sum())
 
     # print('h^5 is about: ', h ** 5)
@@ -65,8 +68,8 @@ def printResult():
     print('t\t\tExact\t\tRKF45\t\tRK4\t\tRK3\t\tADAMS')
 
     for it in range(0, len(t)):
-        print('{:0.1f} \t {}\t {}'.format(t[it],
-                                          y_exact[it], y_rkf45[it]))  # , y_rk4[it], y_rk3[it]))  # , y_adams[it]))
+        print('{:0.1f} \t {}\t {}\t {}\t {}'.format(t[it],
+                                                    y_exact[it], y_rkf45[it], y_rk4[it], y_rk3[it]))  # , y_adams[it]))
 
 
 if __name__ == '__main__':
