@@ -14,10 +14,10 @@ def adams2(function, arguments_T, initialConditions):
     y[1] = startPoints[1]
     y[2] = initialConditions
 
-    for it in range(2, l-1):
-        y[it] = y[it - 1] + (h / 2) * (3 * function(arguments_T[it - 1], y[it - 1]) - function(arguments_T[it - 2], y[it - 2]))
+    arguments_T = numpy.append(arguments_T, [2.1, 2.2])
 
-    for it in range(0, len(arguments_T)):
-        y2[it] = y[it + 2]
+    for it in range(2, l):
+        y[it] = y[it - 1] + (h / 2) * (3 * function(arguments_T[it - 1], y[it - 1]) - function(arguments_T[it - 2],
+                                                                                               y[it - 2]))
 
-    return y2[:, 0]
+    return y[2:, 0]
