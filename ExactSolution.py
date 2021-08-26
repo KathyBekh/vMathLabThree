@@ -1,8 +1,9 @@
 import math
 import numpy
 
+''' Точное решение: 𝑦(𝑡) = 𝑒^2t '''
 
-# Точное решение системы уравнений
+
 def exact(t):
     y = numpy.zeros(len(t))
     for it in range(0, len(t)):

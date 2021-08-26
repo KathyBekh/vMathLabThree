@@ -1,14 +1,27 @@
 import numpy
-import Runge_Kutta3
+import Runge_Kutta4
+
+'''
+    Метод Адамса 2 степени точности.
+    Суть методов Адамса в пошаговом вычислении значений решения y = y(t) 
+    дифференциального уравнения вида y’ = f (t, y). Использование трёх точек {t_n, t_n-1, t_n-2} 
+    и полинома 2-й степени приведёт к формуле y[n] = y[n-1] + (h / 2) * (3 * f(t[n-1], y[n-1]) - f(t[n-2], y[n-2])).
+    Данный метод имеет 2-ю степень точности и является явным. Методы Адамса не являются самостартующими, 
+    т. е. они требуют для начала интегрирования специальных стартовых алгоритмов для расчета дополнительных начальных условий. 
+    В двумерном массиве Y хранятся значения функции y и производные y' . Чтобы вычислить начальные условия для «старта»
+    метода Адамса, был использован метод Рунге-Кутты 4 степени. С его помощью были получены значения функции f  
+    в точках 0.8 и 0.9. Они были сохранены на нулевую и первую позицию массива Y, на второй позиции - начальное условие 
+    для точки 1.0. Затем была применена сама формула для вычисления интеграла. Значения в точках 0.8 и 0.9 не относятся 
+    к нужному промежутку решений [1;2], поэтому возвращается массив значений функции у со второго индекса.
+'''
 
 
 def adams2(function, arguments_T, initialConditions):
-    l = len(arguments_T) + 2
-    y = numpy.zeros((l, len(initialConditions)))
-    y2 = numpy.zeros((len(arguments_T), len(initialConditions)))
+    length = len(arguments_T) + 2
+    y = numpy.zeros((length, len(initialConditions)))
 
     h = arguments_T[1] - arguments_T[0]
-    startPoints = Runge_Kutta3.rk3(function, [arguments_T[0], arguments_T[0] - h, arguments_T[0] - 2 * h],
+    startPoints = Runge_Kutta4.rk4(function, [arguments_T[0], arguments_T[0] - h, arguments_T[0] - 2 * h],
                                    initialConditions)
     y[0] = startPoints[2]
     y[1] = startPoints[1]
@@ -16,7 +29,7 @@ def adams2(function, arguments_T, initialConditions):
 
     arguments_T = numpy.append(arguments_T, [2.1, 2.2])
 
-    for it in range(2, l):
+    for it in range(2, length):
         y[it] = y[it - 1] + (h / 2) * (3 * function(arguments_T[it - 1], y[it - 1]) - function(arguments_T[it - 2],
                                                                                                y[it - 2]))
 
