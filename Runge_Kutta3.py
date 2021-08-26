@@ -11,4 +11,9 @@ def rk3(function, arguments_T, initialConditions):
         k2 = function(arguments_T[it - 1] + 0.5 * h, y[it - 1] + 0.5 * h * k1)
         k3 = function(arguments_T[it - 1] + 3.0 * h / 4, y[it - 1] + 3.0 * h * k2 / 4)
         y[it] = y[it - 1] + h * (2 * k1 + 3 * k2 + 4 * k3) / 9.0
+    return y
+
+
+def rk3Values(function, arguments_T, initialConditions):
+    y = rk3(function, arguments_T, initialConditions)
     return y[:, 0]
